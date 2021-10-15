@@ -16,7 +16,13 @@ API.interceptors.request.use((req) => {
 
 // const url = "https://olayinka-memories.herokuapp.com/";
 
-export const fetchPosts = () => API.get('/posts');
+export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
+
+export const fetchSinglePost = (id) => API.get(`/posts/${id}`);
+
+// export const fetchPostsBySearch = () => API.get(`/posts?page=1`);
+
+export const fetchPostsBySearch = ( searchQuery ) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);
 
 export const createPost = ( newPost) => API.post( '/posts', newPost);
 

@@ -1,8 +1,9 @@
 import React from 'react'
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase } from '@material-ui/core';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import MoreHorizonIcon from '@mui/icons-material/MoreHoriz';
+import {useHistory} from 'react-router-dom';    
 
 import ThumbUpAltOutlined from '@mui/icons-material/ThumbUpAltOutlined';
 
@@ -13,9 +14,10 @@ import useStyles from './styles';
 import { useDispatch } from 'react-redux';
 import { deletePost, likePost } from '../../../actions/posts';
 
-const Post = ( {post, setCurrentId} ) => {
+const Post = ({post, setCurrentId} ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
     
     const user = JSON.parse(localStorage.getItem('profile'));
 
@@ -32,31 +34,39 @@ const Post = ( {post, setCurrentId} ) => {
         return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
       };
 
+
+    const openPost = () => history.push(`/posts/${post._id}`);
     return (
-        <Card className={classes.card}>
-            <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
-            <div className={classes.overlay}>
-                <Typography variant="h6">{post.name}</Typography>
-                <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
-            </div>
-
-            {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
-                <div className={classes.overlay2}>
-                    <Button style={{color: 'white'}} 
-                        size="small" 
-                        onClick={() => setCurrentId(post._id)}>
-                        <MoreHorizonIcon fontSize="default" />
-                    </Button>
+        <Card className={classes.card} raised elevation={6}>
+            <ButtonBase
+                className={classes.cardAction}
+                onClick={openPost}
+            >
+            
+                <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
+                <div className={classes.overlay}>
+                    <Typography variant="h6">{post.name}</Typography>
+                    <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
                 </div>
-            )}
 
-            <div className={classes.details}>
-                <Typography variant="body2" color="textSecondary">{post.tags.map( (tag) => `#${tag} `)}</Typography>
-            </div>
-            <Typography className={classes.title} variant="h5" color="textSecondary" gutterBottom>{post.title}</Typography>
-            <CardContent>
-                <Typography variant="body2" component="p" color="textSecondary" gutterBottom>{post.message}</Typography>
-            </CardContent>
+                {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                    <div className={classes.overlay2}>
+                        <Button style={{color: 'white'}} 
+                            size="small" 
+                            onClick={() => setCurrentId(post._id)}>
+                            <MoreHorizonIcon fontSize="default" />
+                        </Button>
+                    </div>
+                )}
+
+                <div className={classes.details}>
+                    <Typography variant="body2" color="textSecondary">{post.tags.map( (tag) => `#${tag} `)}</Typography>
+                </div>
+                <Typography className={classes.title} variant="h5" color="textSecondary" gutterBottom>{post.title}</Typography>
+                <CardContent>
+                    <Typography variant="body2" component="p" color="textSecondary" gutterBottom>{post.message}</Typography>
+                </CardContent>
+            </ButtonBase>
 
             <CardActions className={classes.cardActions}>
                 <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch( likePost(post._id))}>
