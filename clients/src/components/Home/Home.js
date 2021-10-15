@@ -83,7 +83,6 @@ const Home = () => {
                                 label="Search Tags"
                                 variant="outlined"
                             />
-
                             <Button onClick={searchPost} variant="contained" className={classes.searchButton} color="primary">
                                 Search
                             </Button>
