@@ -12,7 +12,7 @@ import Form from '../Form/Form';
 import Pagination from '../Pagination';
 
 
-import { getPosts, getPostsBySearch } from '../../actions/posts';
+import { getPostsBySearch } from '../../actions/posts';
 
 import useStyles from './styles';
 
